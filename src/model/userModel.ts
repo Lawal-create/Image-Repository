@@ -37,10 +37,12 @@ const UserSchema: Schema = new Schema(
       String,
       "https://ui-avatars.com/api/?firstName=New+User"
     ),
-    images: {
-      type: Schema.Types.ObjectId,
-      ref: "Image"
-    }
+    images: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Image"
+      }
+    ]
   },
   { timestamps: true }
 );
