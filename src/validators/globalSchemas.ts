@@ -61,5 +61,8 @@ export const queryParamsValidator = Joi.object({
   sortBy: Joi.string().valid("date").messages({
     "any.only": "sortBy should be date"
   }),
-  direction: Joi.string().valid("asc", "desc")
+  direction: Joi.string().valid("asc", "desc"),
+  permission: Joi.string().valid("public", "private").messages({
+    "any.only": "permission could only be public or private"
+  })
 });
