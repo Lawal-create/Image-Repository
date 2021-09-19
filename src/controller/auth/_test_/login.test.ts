@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { IBasicUser, getBasicUserDetails } from "../../../utils/helpers/auth";
+import { getBasicUserDetails } from "../../../utils/helpers/auth";
 import {
   basicUser,
   createTestUser,
@@ -50,7 +50,6 @@ describe("POST /login", () => {
         expect(res.body.data).to.have.property("user");
 
         const user = getBasicUserDetails(res.body.data.user);
-        console.log(getUserResponse(user._id, user.createdAt, user.updatedAt));
         expect(user).to.deep.equal(
           getUserResponse(user._id, user.createdAt, user.updatedAt)
         );
