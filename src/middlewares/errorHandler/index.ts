@@ -2,13 +2,13 @@ import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
 import { MongoError } from "mongodb";
 import { Error as MongooseError } from "mongoose";
 import { AxiosError } from "axios";
-// import { deleteSingleFile, deleteMultipleFiles } from "../../utils/aws";
+import { deleteSingleFile, deleteMultipleFiles } from "../../utils/aws";
 import logger from "../../utils/logger";
 import { errorResponse } from "../../utils/responses";
 import ApiError from "./ApiError";
 import { nodeEnv } from "../../config";
 import { JsonWebTokenError } from "jsonwebtoken";
-// import { UploadFile } from "../../types/global";
+import { UploadFile } from "../../types/global";
 
 const errorHandler = (
   err: ErrorRequestHandler | MongoError | AxiosError,
@@ -85,19 +85,19 @@ const errorHandler = (
   if (nodeEnv !== "test") console.error(err);
 
   // delete any uploaded file
-  // if (req.file) deleteSingleFile(req, (req.file as UploadFile).key);
-  // else if (req.files) {
-  //   const filepaths = [];
-  //   //flatten all file objects to be in a single array
-  //   const files = [].concat(...Object.values(req.files));
+  if (req.file) deleteSingleFile(req, (req.file as UploadFile).key);
+  else if (req.files) {
+    const filepaths = [];
+    //flatten all file objects to be in a single array
+    const files = [].concat(...Object.values(req.files));
 
-  //   if (files.length) {
-  //     for (const file of files) {
-  //       filepaths.push({ Key: (file as UploadFile).key });
-  //     }
-  //     deleteMultipleFiles(req, filepaths);
-  //   }
-  // }
+    if (files.length) {
+      for (const file of files) {
+        filepaths.push({ Key: (file as UploadFile).key });
+      }
+      deleteMultipleFiles(req, filepaths);
+    }
+  }
 
   errorResponse(res, errCode, message);
 };

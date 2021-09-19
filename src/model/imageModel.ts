@@ -2,26 +2,24 @@ import { Document, Model, model, Types, Schema } from "mongoose";
 import { TimeStamps, permission } from "../types/global";
 
 export interface IImage extends Document, TimeStamps {
-  imageUrl: string;
-  title: string;
+  imagesUrl: string | string[];
+  keys: string[] | string[][] | null | undefined;
   permisssion: "public" | "private";
   createdBy: Types.ObjectId;
 }
 
 const ImageSchema: Schema = new Schema({
-  imageUrl: {
-    type: String,
-    required: [true, "Image Url is required"]
-  },
-  title: {
-    type: String,
-    required: [true, "Title is required"]
-  },
+  imagesUrl: Schema.Types.Mixed,
   permission: {
     type: String,
     enum: permission,
     required: [true, "Permission is required"]
   },
+  keys: [
+    {
+      type: Schema.Types.Mixed
+    }
+  ],
   createdBy: {
     type: Schema.Types.ObjectId,
     ref: "User"
