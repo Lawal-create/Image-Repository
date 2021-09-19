@@ -9,12 +9,12 @@ declare namespace NodeJS {
     JWT_EXPIRES_IN: string;
     BCRYPT_SALT: string;
     REFRESH_TOKEN_EXPIRES_IN: string;
-    PASSWORD_RESET_TOKEN_EXPIRES_IN: string;
     AWS_ACCESS_ID: string;
     AWS_ACCESS_KEY: string;
     AWS_BUCKET_NAME: string;
     IMAGGA_API_KEY: string;
     IMAGGA_API_SECRET: string;
     IMAGGA_ACCESS_TOKEN: string;
+    CRON_JOB_SCHEDULE: string;
   }
 }

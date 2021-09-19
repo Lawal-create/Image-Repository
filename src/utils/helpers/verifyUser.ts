@@ -6,7 +6,7 @@ const verifyUser = async (
   next: NextFunction,
   createdBy: string
 ): Promise<void | IUser> => {
-  const user = await User.findById(createdBy);
+  const user = await User.findById(createdBy).populate("images");
   if (!user) {
     return next(new ApiError(404, "User not Found"));
   } else {

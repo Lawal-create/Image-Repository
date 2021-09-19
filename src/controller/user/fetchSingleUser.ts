@@ -12,7 +12,7 @@ const fetchSingleUser = async (
 ): Promise<void> => {
   try {
     Logger.info(formatLog(req, "START: Fetching A Single User"));
-    const { userId } = req.params;
+    const userId = String(res.locals.user._id);
     const user = await verifyUser(next, userId);
     if (instanceOfUser(user)) {
       Logger.info(formatLog(req, "END: Successfully Fetched A Single User"));

@@ -5,10 +5,10 @@ import { CookieOptions, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { TimeStamps } from "../../types/global";
 import {
-  bcryptSalt,
   jwtExpiresIn,
   jwtSecret,
-  refreshTokenExpiresIn
+  refreshTokenExpiresIn,
+  bcryptSalt
 } from "../../config";
 
 export const generateHashedValue = (value: string): string => {

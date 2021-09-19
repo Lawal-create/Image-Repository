@@ -21,12 +21,12 @@ const addImages = (
       const createdBy = String(res.locals.user._id);
       const user = await verifyUser(next, createdBy);
       const { permission } = req.body;
-      const image: IImage = new Image({
-        createdBy: createdBy,
-        permission: permission
-      });
       if (type === "single") {
         Logger.info(formatLog(req, "Adding Images"));
+        const image: IImage = new Image({
+          createdBy: createdBy,
+          permission: permission
+        });
         if ((req.file as Express.Multer.File).fieldname === "imagesUrl") {
           const images = req.file as Express.Multer.File;
           image.imagesUrl = (images as UploadFile).location;
@@ -35,6 +35,7 @@ const addImages = (
             next,
             (images as UploadFile).location
           );
+          image.keysTagged = true;
         }
         await image.save();
         if (instanceOfUser(user)) {
@@ -48,32 +49,37 @@ const addImages = (
       if (type === "bulk") {
         Logger.info(formatLog(req, "Adding Multiple Images"));
         type MulterFile = { [fieldname: string]: Express.Multer.File[] };
+        const imagesArray = [];
         const arrayImageUrls: string[] = [];
         const arrayImageKeys: string[][] = [];
+        const imageIds = [];
         const images = (req.files as MulterFile)?.imagesUrl;
         if (images) {
-          for (let i = 0; i < images.length; i++) {
-            arrayImageUrls.push((images[i] as UploadFile).location);
-          }
           let keys: string[] | null | undefined = [];
-          image.imagesUrl = arrayImageUrls;
-          for (let i = 0; i < image.imagesUrl.length; i++) {
+          for (let i = 0; i < images.length; i++) {
+            const image: IImage = new Image({
+              createdBy: createdBy,
+              permission: permission
+            });
+            arrayImageUrls.push((images[i] as UploadFile).location);
             keys = await getImageProperties(
               req,
               next,
-              String(image.imagesUrl[i])
+              String(arrayImageUrls[i])
             );
-
             if (instanceOfStringArray(keys)) {
               arrayImageKeys.push(keys);
             }
+            image.keys = arrayImageKeys[i];
+            image.imagesUrl = arrayImageUrls[i];
+            imagesArray.push(image);
+            imageIds.push(image._id);
           }
-          image.keys = arrayImageKeys;
         }
 
-        await image.save();
+        const insertedImages = await Image.insertMany(imagesArray);
         if (instanceOfUser(user)) {
-          user.images.push(image._id);
+          user.images.push(...imageIds);
           await user.save();
         }
 
@@ -82,7 +88,7 @@ const addImages = (
           res,
           200,
           "Successfully Added Multiple Images",
-          image
+          insertedImages
         );
       }
     } catch (err) {

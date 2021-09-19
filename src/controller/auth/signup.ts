@@ -6,6 +6,7 @@ import { generateHashedValue } from "../../utils/helpers/auth";
 import logger from "../../utils/logger";
 import formatLog from "../../utils/logger/formatLog";
 import { successResponse } from "../../utils/responses";
+import { getBasicUserDetails } from "../../utils/helpers/auth";
 
 const signupUser = async (
   req: Request,
@@ -33,7 +34,12 @@ const signupUser = async (
     await user.save();
 
     logger.info(formatLog(req, "END: Register User Service"));
-    return successResponse(res, 201, "Successfully created user account", user);
+    return successResponse(
+      res,
+      201,
+      "Successfully created user account",
+      getBasicUserDetails(user)
+    );
   } catch (err) {
     next(err);
   }

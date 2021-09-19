@@ -1,5 +1,7 @@
 import express, { Router } from "express";
 import addImages from "../controller/image/addImages";
+import searchImageByImage from "../controller/image/searchImageByImage";
+import searchImages from "../controller/image/searchImageByText";
 import requiresSignIn from "../middlewares/auth/requiresSignIn";
 import joiMiddleware from "../middlewares/joiMiddleware";
 import upload from "../utils/aws";
@@ -18,9 +20,16 @@ imageRouter.post(
 
 imageRouter.post(
   "/add-multiple-image",
-  upload.fields([{ name: "imagesUrl", maxCount: 10 }]),
+  upload.fields([{ name: "imagesUrl", maxCount: 9 }]),
   joiMiddleware(createImageValidator),
   addImages("bulk")
 );
 
+imageRouter.post(
+  "/image-search",
+  upload.single("imagesUrl"),
+  searchImageByImage
+);
+
+imageRouter.get("/search", searchImages);
 export default imageRouter;
