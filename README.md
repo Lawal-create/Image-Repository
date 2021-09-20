@@ -15,7 +15,7 @@ The following contains the steps required to get the application up and running 
 
 To run the app locally, follow the steps below:
 
-1. Clone the repository to your PC using your terminal. For more info, refer to this [article](https://support.atlassian.com/bitbucket-cloud/docs/clone-a-repository/)
+1. Clone the repository to your PC using your terminal. For more info, refer to this [article](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
 
 2. After cloning, navigate into the repo using:
 
