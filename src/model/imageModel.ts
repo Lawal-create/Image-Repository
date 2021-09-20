@@ -10,24 +10,27 @@ export interface IImage extends Document, TimeStamps {
   keysTagged: boolean;
 }
 
-const ImageSchema: Schema = new Schema({
-  imagesUrl: Schema.Types.Mixed,
-  permission: {
-    type: String,
-    enum: permission,
-    required: [true, "Permission is required"]
-  },
-  keys: [
-    {
-      type: Schema.Types.Mixed
+const ImageSchema: Schema = new Schema(
+  {
+    imagesUrl: Schema.Types.Mixed,
+    permission: {
+      type: String,
+      enum: permission,
+      required: [true, "Permission is required"]
+    },
+    keys: [
+      {
+        type: Schema.Types.Mixed
+      }
+    ],
+    keysTagged: getTypeAndDefaultValue(Boolean, false),
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User"
     }
-  ],
-  keysTagged: getTypeAndDefaultValue(Boolean, false),
-  createdBy: {
-    type: Schema.Types.ObjectId,
-    ref: "User"
-  }
-});
+  },
+  { timestamps: true }
+);
 
 const Image: Model<IImage> = model("Image", ImageSchema);
 

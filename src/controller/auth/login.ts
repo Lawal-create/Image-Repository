@@ -9,6 +9,7 @@ import formatLog from "../../utils/logger/formatLog";
 import { successResponse } from "../../utils/responses";
 import { getBasicUserDetails } from "../../utils/helpers/auth";
 
+//Login a User
 const loginUser = async (
   req: Request,
   res: Response,

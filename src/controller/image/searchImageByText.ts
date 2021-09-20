@@ -4,13 +4,17 @@ import { Request, Response, NextFunction } from "express";
 import Logger from "../../utils/logger/index";
 import formatLog from "../../utils/logger/formatLog";
 
+//Locate Image Links
 export const locateImage = async (
   req: Request,
   res: Response,
   value: string[],
   arrayOfImageLinks: string[]
 ): Promise<void> => {
-  const images = await Image.find({ keys: { $in: value } });
+  const images = await Image.find({
+    permisssion: "public",
+    keys: { $in: value }
+  });
   if (images.length > 0) {
     for (let i = 0; i < images.length; i++) {
       arrayOfImageLinks.push(images[i].imagesUrl);

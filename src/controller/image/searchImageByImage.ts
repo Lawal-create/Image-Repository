@@ -6,6 +6,7 @@ import getImageProperties from "../../utils/imaggaApi";
 import { locateImage } from "./searchImageByText";
 import { instanceOfStringArray } from "../../utils/helpers/instances";
 
+//Controller logic to search for similar images through an image
 const searchImageByImage = async (
   req: Request,
   res: Response,
