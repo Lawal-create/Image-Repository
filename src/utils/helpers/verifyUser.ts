@@ -4,9 +4,10 @@ import { NextFunction } from "express";
 
 const verifyUser = async (
   next: NextFunction,
-  createdBy: string
+  createdBy: string,
+  populate?: string
 ): Promise<void | IUser> => {
-  const user = await User.findById(createdBy).populate("images");
+  const user = await User.findById(createdBy).populate(populate);
   if (!user) {
     return next(new ApiError(404, "User not Found"));
   } else {

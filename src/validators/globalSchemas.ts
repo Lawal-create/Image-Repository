@@ -66,3 +66,9 @@ export const queryParamsValidator = Joi.object({
     "any.only": "permission could only be public or private"
   })
 });
+
+export const userQueryParamsValidator = Joi.object({
+  populate: Joi.string().valid("yes").messages({
+    "any.only": "Populated can only be a yes value"
+  })
+});

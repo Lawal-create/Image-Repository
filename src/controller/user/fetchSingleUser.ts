@@ -13,15 +13,34 @@ const fetchSingleUser = async (
   try {
     Logger.info(formatLog(req, "START: Fetching A Single User"));
     const userId = String(res.locals.user._id);
-    const user = await verifyUser(next, userId);
-    if (instanceOfUser(user)) {
-      Logger.info(formatLog(req, "END: Successfully Fetched A Single User"));
-      return successResponse(
-        res,
-        200,
-        "Successfully Fetched A Single User",
-        user
-      );
+    const { populate } = req.query;
+    if (populate === "yes") {
+      const user = await verifyUser(next, userId, "images");
+      if (instanceOfUser(user)) {
+        Logger.info(
+          formatLog(
+            req,
+            "END: Successfully Fetched A Single User With Images Populated"
+          )
+        );
+        return successResponse(
+          res,
+          200,
+          "Successfully Fetched A Single User With Images Populated",
+          user
+        );
+      }
+    } else {
+      const user = await verifyUser(next, userId);
+      if (instanceOfUser(user)) {
+        Logger.info(formatLog(req, "END: Successfully Fetched A Single User"));
+        return successResponse(
+          res,
+          200,
+          "Successfully Fetched A Single User",
+          user
+        );
+      }
     }
   } catch (err) {
     next(err);
