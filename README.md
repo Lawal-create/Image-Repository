@@ -1,5 +1,5 @@
 # Image-Repository
-Built an image repository.
+Built an API for users to upload images and search through the images either by text or by uploading a image with similar features.
 
 ## Getting Started
 
