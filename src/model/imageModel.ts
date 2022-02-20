@@ -23,7 +23,6 @@ const ImageSchema: Schema = new Schema(
         type: Schema.Types.Mixed
       }
     ],
-    keysTagged: getTypeAndDefaultValue(Boolean, false),
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: "User"

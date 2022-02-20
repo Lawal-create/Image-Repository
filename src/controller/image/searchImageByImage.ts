@@ -5,6 +5,7 @@ import { UploadFile } from "../../types/global";
 import getImageProperties from "../../utils/imaggaApi";
 import { locateImage } from "./searchImageByText";
 import { instanceOfStringArray } from "../../utils/helpers/instances";
+import { successResponse } from "../../utils/responses";
 
 //Controller logic to search for similar images through an image
 const searchImageByImage = async (
@@ -29,8 +30,6 @@ const searchImageByImage = async (
         await locateImage(req, res, searchKeys, arrayOfImageLinks);
       }
     }
-
-    Logger.info(formatLog(req, "END: Successfully Added Images"));
     // return successResponse(res, 200, "Successfully Added An Image", image);
   } catch (err) {
     next(err);

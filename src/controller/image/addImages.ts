@@ -9,7 +9,11 @@ import verifyUser from "../../utils/helpers/verifyUser";
 import { instanceOfUser } from "../../utils/helpers/instances";
 import { instanceOfStringArray } from "../../utils/helpers/instances";
 
-//Add either a single or bulk Image
+/**
+ *
+ * @param type single | bulk
+ * @returns
+ */
 const addImages = (
   type: "single" | "bulk"
 ): ((req: Request, res: Response, next: NextFunction) => Promise<void>) => {
@@ -30,13 +34,10 @@ const addImages = (
         });
         if ((req.file as Express.Multer.File).fieldname === "imagesUrl") {
           const images = req.file as Express.Multer.File;
-          image.imagesUrl = (images as UploadFile).location;
+          const location = (images as UploadFile).location;
+          image.imagesUrl = location;
           const arrayKeys: string[] | null | undefined =
-            await getImageProperties(
-              req,
-              next,
-              (images as UploadFile).location
-            );
+            await getImageProperties(req, next, location);
           if (instanceOfStringArray(arrayKeys)) {
             image.keys = arrayKeys.splice(0, 10);
             image.keysTagged = true;
@@ -75,7 +76,7 @@ const addImages = (
             if (instanceOfStringArray(keys)) {
               arrayImageKeys.push(keys);
             }
-            image.keys = arrayImageKeys[i].splice(0, 10);
+            image.keys = arrayImageKeys[i].slice(0, 10);
             image.imagesUrl = arrayImageUrls[i];
             image.keysTagged = true;
             imagesArray.push(image);

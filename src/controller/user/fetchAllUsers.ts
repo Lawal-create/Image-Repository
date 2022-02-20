@@ -37,6 +37,7 @@ const fetchAllUsers = async (
       endDate as string,
       options
     );
+    //Paginates the data according based on the parameters.
     const paginatedResponse = await fetchMongoDBPaginatedData(
       User,
       page,

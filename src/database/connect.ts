@@ -2,6 +2,7 @@ import mongoose, { ConnectOptions } from "mongoose";
 import { mongoURI } from "../config";
 import logger from "../utils/logger";
 
+//Connection to mongoDb Database
 const connectToDB = async (): Promise<void> => {
   try {
     mongoose.connect(mongoURI, {
