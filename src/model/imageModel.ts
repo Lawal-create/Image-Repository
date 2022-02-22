@@ -28,7 +28,8 @@ const ImageSchema: Schema = new Schema(
       ref: "User"
     },
     keysTagged: {
-      type: Boolean
+      type: Boolean,
+      default: false
     }
   },
   { timestamps: true }

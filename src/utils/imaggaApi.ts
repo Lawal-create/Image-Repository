@@ -1,7 +1,5 @@
-import { NextFunction, Request } from "express";
 import { imaggaApiKey, imaggaSecret } from "../config";
 import logger from "../utils/logger";
-import formatLog from "../utils/logger/formatLog";
 import got from "got";
 import ApiError from "../middlewares/errorHandler/ApiError";
 

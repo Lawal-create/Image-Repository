@@ -1,13 +1,13 @@
-import User from "../../../model/userModel";
-import { generateHashedValue, IBasicUser } from "../../../utils/helpers/auth";
-import server from "../../../server";
+import User from "../model/userModel";
+import { generateHashedValue, IBasicUser } from "../utils/helpers/auth";
+import { app } from "../server";
 import chai from "chai";
 import chaiHttp from "chai-http";
 
 chai.use(chaiHttp);
 
 export const initiateRequest = () => {
-  return chai.request(server);
+  return chai.request(app);
 };
 
 export const basicUser = {

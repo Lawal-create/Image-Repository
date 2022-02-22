@@ -1,29 +1,13 @@
-import express, { Request, Router, Response, NextFunction } from "express";
-// import addImages from "../controller/image/addImages";
-// import searchImageByImage from "../controller/image/searchImageByImage";
-// import searchImages from "../controller/image/searchImageByText";
+import express, { Router } from "express";
 import requiresSignIn from "../middlewares/auth/requiresSignIn";
 import joiMiddleware from "../middlewares/joiMiddleware";
 import upload from "../utils/aws";
 import { createImageValidator } from "../validators/imageSchemas";
-import { downloadSingleFile } from "../utils/aws";
-import { imageService } from "../di/serviceLocator";
+import { imageService, searchService } from "../di/serviceLocator";
 
 const imageRouter: Router = express.Router();
 
 imageRouter.use(requiresSignIn);
-
-// imageRouter.get(
-//   "/downlaod_image:fileKey",
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//       const { fileKey } = req.query;
-//       await downloadSingleFile(req, res, String(fileKey));
-//     } catch (err) {
-//       next(err);
-//     }
-//   }
-// );
 
 imageRouter.post(
   "/add-image",
@@ -42,8 +26,8 @@ imageRouter.post(
 imageRouter.post(
   "/image-search",
   upload.single("imagesUrl"),
-  imageService.searchImages
+  searchService.searchImages
 );
 
-imageRouter.get("/text-search", imageService.searchByText);
+imageRouter.get("/text-search", searchService.searchByText);
 export default imageRouter;

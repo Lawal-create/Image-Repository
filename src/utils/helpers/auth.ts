@@ -65,9 +65,6 @@ export const generateAvatarUrl = (name: string): string => {
   return `https://ui-avatars.com/api?name=${name}`;
 };
 
-// export const userBasicPaths =
-//   "name companyName email role profileImageUrl phoneNumber verified phoneVerified oneSignalId";
-
 export interface IBasicUser extends TimeStamps {
   _id: string;
   firstName: string;

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { getBasicUserDetails } from "../../../utils/helpers/auth";
+import { getBasicUserDetails } from "../utils/helpers/auth";
 import {
   basicUser,
   createTestUser,
@@ -34,7 +34,7 @@ describe("POST /login", () => {
         res.body.should.be.a("object");
         res.body.should.have.property("error");
 
-        expect(res.body.error).to.equal("Password is not correct");
+        expect(res.body.error).to.equal("Invalid Email or Password");
         done();
       });
   });
@@ -46,13 +46,7 @@ describe("POST /login", () => {
         res.should.have.status(200);
         res.body.should.be.a("object");
 
-        expect(res.body.data).to.have.property("jwt");
-        expect(res.body.data).to.have.property("user");
-
-        const user = getBasicUserDetails(res.body.data.user);
-        expect(user).to.deep.equal(
-          getUserResponse(user._id, user.createdAt, user.updatedAt)
-        );
+        expect(res.body.data).to.have.property("accessToken");
         done();
       });
   });

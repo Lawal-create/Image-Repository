@@ -22,6 +22,7 @@ const cronJobs = async (imageRepo: IRepository<IImage>): Promise<void> => {
         untaggedImages[i].keysTagged = true;
         await untaggedImages[i].save();
       }
+      logger.info("Successfully Added Key Tags to various Images");
     }
   });
   addKeyTags.start();
