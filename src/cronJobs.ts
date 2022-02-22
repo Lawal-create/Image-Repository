@@ -1,9 +1,8 @@
 import * as cron from "node-cron";
-import { FilterQuery, UpdateQuery, Model } from "mongoose";
 import { cronJobSchedule } from "./config";
-import Image, { IImage } from "./model/imageModel";
+import { IImage } from "./model/imageModel";
 import logger from "./utils/logger";
-import Repository, { IRepository } from "./repository/repository";
+import { IRepository } from "./repository/repository";
 import getImageProperties from "./utils/imaggaApi";
 
 const cronJobs = async (imageRepo: IRepository<IImage>): Promise<void> => {

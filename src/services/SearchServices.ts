@@ -36,7 +36,6 @@ class SearchService {
       if (instanceOfStringArray(imageKeys)) {
         imageKeys = imageKeys.slice(0, 7);
       }
-      console.log(imageKeys);
       const images = await this.imageRepo.find({
         permisssion: "public",
         keys: { $in: imageKeys as string[] }

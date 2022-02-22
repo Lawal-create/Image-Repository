@@ -5,8 +5,6 @@ import multers3 from "multer-s3";
 import { awsBucket, awsID, awsKey } from "../../config";
 import logger from "../logger";
 import formatLog from "../logger/formatLog";
-import fs from "fs";
-import { successResponse } from "../responses/index";
 
 const s3 = new aws.S3({
   secretAccessKey: awsKey,
@@ -117,48 +115,6 @@ export const downloadSingleFile = async (
   res.attachment(filepath);
   const fileStream = s3.getObject(options).createReadStream();
   fileStream.pipe(res);
-};
-
-export const uploadPart = async (
-  req: Request,
-  filePath: string,
-  next: NextFunction
-) => {
-  const stream = fs.createReadStream(filePath);
-  const uploadedId = await createMultiFileUpload(req, filePath, next);
-  const params = {
-    Bucket: awsBucket,
-    Key: filePath,
-    Body: stream,
-    PartNumber: 1,
-    UploadId: uploadedId as string
-  };
-  const successData = await s3.uploadPart(params).promise();
-  return successData;
-};
-
-export const fileUpload = async (fieldName: string, filePath: string) => {
-  const stream = fs.createReadStream(filePath);
-  const fileNameInS3 = `some/folder/risevest/${fieldName}`;
-  const params = {
-    Bucket: awsBucket,
-    Key: fileNameInS3,
-    Body: stream,
-    ACL: "public-read"
-  };
-
-  const options = {
-    partSize: 10 * 1024 * 1024,
-    // how many concurrent uploads
-    queueSize: 5
-  };
-
-  try {
-    await s3.upload(params, options).promise();
-    console.log("upload OK", filePath);
-  } catch (error) {
-    console.log("upload ERROR", filePath, error);
-  }
 };
 
 export const deleteSingleFile = async (

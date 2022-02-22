@@ -1,10 +1,8 @@
 import { expect } from "chai";
-import { getBasicUserDetails } from "../utils/helpers/auth";
 import {
   basicUser,
   createTestUser,
   deleteTestUser,
-  getUserResponse,
   initiateRequest
 } from "./utils.test";
 
