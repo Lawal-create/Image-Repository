@@ -1,6 +1,5 @@
-import { Model } from "mongoose";
+import { Model, FilterQuery, UpdateQuery } from "mongoose";
 import { PaginatedResponse } from "../utils/helpers/paginate";
-import { FilterQuery } from "mongoose";
 
 export interface IRepository<T> {
   create(body: T): Promise<T | void>;
@@ -11,6 +10,7 @@ export interface IRepository<T> {
   findByIdAndDelete(id: string): Promise<void>;
   findOneAndDelete(filter: FilterQuery<T>): Promise<void>;
   deleteMany(filter: FilterQuery<T>): Promise<void>;
+  updateMany(filter: FilterQuery<T>, updates: UpdateQuery<T>): Promise<void>;
 }
 
 class Repository<DataType> implements IRepository<DataType> {
@@ -59,6 +59,13 @@ class Repository<DataType> implements IRepository<DataType> {
 
   deleteMany = async (filter: FilterQuery<DataType>): Promise<void> => {
     await this.model.deleteMany(filter);
+  };
+
+  updateMany = async (
+    query: FilterQuery<DataType>,
+    updates: UpdateQuery<DataType>
+  ): Promise<void> => {
+    await this.model.updateMany(query, updates);
   };
 }
 

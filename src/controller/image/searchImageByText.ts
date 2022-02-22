@@ -17,7 +17,7 @@ export const locateImage = async (
   });
   if (images.length > 0) {
     for (let i = 0; i < images.length; i++) {
-      arrayOfImageLinks.push(images[i].imagesUrl);
+      arrayOfImageLinks.push(String(images[i].imagesUrl));
     }
   }
   Logger.info(formatLog(req, "Successfully Searched For An Images"));
