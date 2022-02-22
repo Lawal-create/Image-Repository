@@ -15,7 +15,8 @@ const ImageSchema: Schema = new Schema(
     permission: {
       type: String,
       enum: permission,
-      required: [true, "Permission is required"]
+      required: [true, "Permission is required"],
+      default: "public"
     },
     keys: [
       {

@@ -1,7 +1,7 @@
 import express, { Request, Router, Response, NextFunction } from "express";
 // import addImages from "../controller/image/addImages";
 // import searchImageByImage from "../controller/image/searchImageByImage";
-import searchImages from "../controller/image/searchImageByText";
+// import searchImages from "../controller/image/searchImageByText";
 import requiresSignIn from "../middlewares/auth/requiresSignIn";
 import joiMiddleware from "../middlewares/joiMiddleware";
 import upload from "../utils/aws";
@@ -10,6 +10,8 @@ import { downloadSingleFile } from "../utils/aws";
 import { imageService } from "../di/serviceLocator";
 
 const imageRouter: Router = express.Router();
+
+imageRouter.use(requiresSignIn);
 
 // imageRouter.get(
 //   "/downlaod_image:fileKey",
@@ -43,5 +45,5 @@ imageRouter.post(
   imageService.searchImages
 );
 
-imageRouter.get("/search/:text", imageService.searchByText);
+imageRouter.get("/text-search", imageService.searchByText);
 export default imageRouter;

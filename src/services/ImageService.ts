@@ -19,47 +19,45 @@ class ImageService {
     this.imageRepo = imageRepo;
     this.userRepo = userRepo;
   }
-  addSingleImage = () => {
-    return async (
-      req: Request,
-      res: Response,
-      next: NextFunction
-    ): Promise<void> => {
-      try {
-        logger.info(formatLog(req, "Adding A Single Image"));
-        const createdBy = String(res.locals.user._id);
-        const user = await this.userRepo.findById(createdBy);
+  addSingleImage = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      logger.info(formatLog(req, "Adding A Single Image"));
+      const createdBy = String(res.locals.user._id);
+      const user = await this.userRepo.findById(createdBy);
 
-        if (!user) throw new ApiError(400, "User not found");
-        const { permission } = req.body;
-        let imagesUrl = "";
+      if (!user) throw new ApiError(400, "User not found");
+      const { permission } = req.body;
+      let imagesUrl = "";
 
-        if ((req.file as Express.Multer.File).fieldname === "imagesUrl") {
-          const images = req.file as Express.Multer.File;
-          const location = (images as UploadFile).location;
-          imagesUrl = location;
-        }
-
-        const image = await this.imageRepo.create({
-          createdBy: createdBy,
-          permisssion: permission,
-          imagesUrl: imagesUrl
-        } as IImage);
-
-        user.images.push((image as IImage)._id);
-        user.save();
-
-        logger.info(formatLog(req, "Successfully Added A Single Image"));
-        return successResponse(
-          res,
-          200,
-          "Successfully Uploaded A Single Image",
-          image
-        );
-      } catch (err) {
-        next(err);
+      if ((req.file as Express.Multer.File).fieldname === "imagesUrl") {
+        const images = req.file as Express.Multer.File;
+        const location = (images as UploadFile).location;
+        imagesUrl = location;
       }
-    };
+
+      const image = await this.imageRepo.create({
+        createdBy: createdBy,
+        permisssion: permission,
+        imagesUrl: imagesUrl
+      } as IImage);
+
+      user.images.push((image as IImage)._id);
+      user.save();
+
+      logger.info(formatLog(req, "Successfully Added A Single Image"));
+      return successResponse(
+        res,
+        200,
+        "Successfully Uploaded A Single Image",
+        image
+      );
+    } catch (err) {
+      next(err);
+    }
   };
 
   addMultipleImages = async (
@@ -161,7 +159,7 @@ class ImageService {
   ): Promise<void> => {
     try {
       logger.info(formatLog(req, "START: Search Images By Text"));
-      const { search } = req.params;
+      const { search } = req.query;
       const words = String(search).split(" ");
       const arrayOfImageLinks: string[] = [];
       if (!search) throw new ApiError(422, "A search query is needed");
@@ -174,7 +172,7 @@ class ImageService {
           arrayOfImageLinks.push(String(images[i].imagesUrl));
         }
       }
-      logger.info(formatLog(req, "Successfully Searched For An Images"));
+      logger.info(formatLog(req, "END: Successfully Searched For An Images"));
       return successResponse(
         res,
         200,
