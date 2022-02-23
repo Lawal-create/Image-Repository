@@ -2,7 +2,7 @@
   "name": "image-repository",
   "version": "1.0.0",
   "description": "Built an image repository.",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "build": "rimraf dist && tsc",
     "start": "node dist/server.js",
@@ -45,6 +45,7 @@
     "multer-s3": "^2.9.0",
     "node-cron": "^3.0.0",
     "rimraf": "^3.0.2",
+    "validator": "^13.7.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {
@@ -57,6 +58,7 @@
     "@types/jsonwebtoken": "^8.5.5",
     "@types/node": "^16.9.1",
     "@types/node-cron": "^2.0.4",
+    "@types/validator": "^13.7.1",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
     "chai": "^4.3.4",

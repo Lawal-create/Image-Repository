@@ -1,5 +1,5 @@
 import aws from "aws-sdk";
-import { Request } from "express";
+import { Request, Response, NextFunction } from "express";
 import multer from "multer";
 import multers3 from "multer-s3";
 import { awsBucket, awsID, awsKey } from "../../config";
@@ -11,7 +11,24 @@ const s3 = new aws.S3({
   accessKeyId: awsID
 });
 
-const validFileTypes = ["image/jpeg", "image/jpg", "image/png"];
+const validFileTypes = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "text/csv",
+  "audio/mpeg",
+  "audio/mp4",
+  "audio/mp3",
+  "audio/ogg",
+  "audio/vnd.wav",
+  "audio/wave",
+  "video/mp4",
+  "video/3gpp",
+  "video/quicktime",
+  "video/x-ms-wmv",
+  "video/x-msvideo",
+  "video/x-flv"
+];
 
 const fileFilter = (
   req: Request,
@@ -21,19 +38,15 @@ const fileFilter = (
   if (validFileTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(
-      new Error(
-        "Invalid file type. Only CSV, JPEG, PNG, JPG, WAV, MP3 and MP4 files are allowed"
-      )
-    );
+    cb(new Error("Invalid file type. Only JPEG, PNG, JPG files are allowed"));
   }
 };
 
 const upload = multer({
   fileFilter,
   limits: {
-    files: 10,
-    fileSize: 1024 * 1024 * 100 //10MB (max file size)
+    parts: Infinity,
+    fileSize: 1024 * 1024 * 200 //200MB (max file size),
   },
   storage: multers3({
     acl: "public-read",
@@ -67,6 +80,42 @@ const upload = multer({
 });
 
 export default upload;
+
+export const createMultiFileUpload = async (
+  req: Request,
+  filepath: string,
+  next: NextFunction
+): Promise<string | undefined> => {
+  logger.info(formatLog(req, `Create Multi-File-Upload with key ${filepath}`));
+  try {
+    const params = { Bucket: awsBucket, Key: filepath };
+    const uploadData = await s3.createMultipartUpload(params).promise();
+    return uploadData.UploadId;
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const downloadSingleFile = async (
+  req: Request,
+  res: Response,
+  filepath: string
+): Promise<void> => {
+  logger.info(formatLog(req, `Downloading file with key "${filepath}"`));
+
+  // const params = { Bucket: awsBucket, Key: filepath };
+
+  // const file = await s3.getObject(params).promise();
+  // res.send(file.Body);
+  const options = {
+    Bucket: awsBucket,
+    Key: filepath
+  };
+
+  res.attachment(filepath);
+  const fileStream = s3.getObject(options).createReadStream();
+  fileStream.pipe(res);
+};
 
 export const deleteSingleFile = async (
   req: Request,

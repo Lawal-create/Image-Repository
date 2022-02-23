@@ -1,5 +1,5 @@
 import { expect, should } from "chai";
-import { IBasicUser } from "../../../utils/helpers/auth";
+import { IBasicUser } from "../utils/helpers/auth";
 import {
   basicUser,
   deleteTestUser,
@@ -38,7 +38,7 @@ describe("POST /signup", () => {
       .post("/api/v1/auth/signup")
       .send(user)
       .end((err: Error, res: ChaiHttp.Response) => {
-        res.should.have.status(201);
+        res.should.have.status(200);
         res.body.should.be.a("object");
 
         expect(res.body.data).to.have.property("email");

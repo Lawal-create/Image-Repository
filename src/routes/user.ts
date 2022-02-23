@@ -1,41 +1,24 @@
 import express, { Router } from "express";
-import fetchPublicImages from "../controller/user/fetchPublicImages";
-import fetchSingleUser from "../controller/user/fetchSingleUser";
-import fetchUserImages from "../controller/user/fetchUserImages";
 import requiresSignIn from "../middlewares/auth/requiresSignIn";
 import joiMiddleware from "../middlewares/joiMiddleware";
-import {
-  queryParamsValidator,
-  userQueryParamsValidator
-} from "../validators/globalSchemas";
-import updateProfileImage from "../controller/user/updateProfileImages";
+import { queryParamsValidator } from "../validators/globalSchemas";
 import upload from "../utils/aws";
+import { userService } from "../di/serviceLocator";
 
 const userRouter: Router = express.Router();
 userRouter.use(requiresSignIn);
 
-//image routes
+//user routes
 userRouter.get(
   "/fetch-user-images",
   joiMiddleware(queryParamsValidator, "query"),
-  fetchUserImages
-);
-
-userRouter.get(
-  "/public-images",
-  joiMiddleware(queryParamsValidator, "query"),
-  fetchPublicImages
-);
-userRouter.get(
-  "/single",
-  joiMiddleware(userQueryParamsValidator, "query"),
-  fetchSingleUser
+  userService.fetchUserImages
 );
 
 userRouter.put(
   "/profile-image",
   upload.single("profileImageUrl"),
-  updateProfileImage
+  userService.updateUserProfileImage
 );
 
 export default userRouter;

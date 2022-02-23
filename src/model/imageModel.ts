@@ -1,12 +1,11 @@
 import { Document, Model, model, Types, Schema } from "mongoose";
 import { TimeStamps, permission } from "../types/global";
-import getTypeAndDefaultValue from "../utils/helpers/getTypeAndDefaultValue";
 
 export interface IImage extends Document, TimeStamps {
   imagesUrl: string;
   keys: string[] | string[][] | null | undefined;
   permisssion: "public" | "private";
-  createdBy: Types.ObjectId;
+  createdBy: Types.ObjectId | string;
   keysTagged: boolean;
 }
 
@@ -16,17 +15,21 @@ const ImageSchema: Schema = new Schema(
     permission: {
       type: String,
       enum: permission,
-      required: [true, "Permission is required"]
+      required: [true, "Permission is required"],
+      default: "public"
     },
     keys: [
       {
         type: Schema.Types.Mixed
       }
     ],
-    keysTagged: getTypeAndDefaultValue(Boolean, false),
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: "User"
+    },
+    keysTagged: {
+      type: Boolean,
+      default: false
     }
   },
   { timestamps: true }

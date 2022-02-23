@@ -1,9 +1,4 @@
 import Joi from "joi";
-// import { checkMongoIdMethod } from "../utils/helpers/checkMongoId";
-
-export const emailRegex =
-  /^[-!#$%&'*+/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
-export const phoneNumberRegex = /^[0-9]+$/;
 
 export const email = Joi.string().required().email().messages({
   "string.email": "Email address is invalid",
@@ -64,11 +59,5 @@ export const queryParamsValidator = Joi.object({
   direction: Joi.string().valid("asc", "desc"),
   permission: Joi.string().valid("public", "private").messages({
     "any.only": "permission could only be public or private"
-  })
-});
-
-export const userQueryParamsValidator = Joi.object({
-  populate: Joi.string().valid("yes").messages({
-    "any.only": "Populated can only be a yes value"
   })
 });
