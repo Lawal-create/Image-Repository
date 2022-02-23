@@ -9,7 +9,7 @@
     "dev": "nodemon",
     "format": "prettier --config .prettierrc src --write",
     "lint": "eslint . --ext .ts",
-    "test": "mocha dist --forceExit --timeout 10000"
+    "test": "mocha dist"
   },
   "repository": {
     "type": "git",
