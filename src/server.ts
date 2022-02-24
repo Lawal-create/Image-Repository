@@ -9,6 +9,7 @@ import notFound from "./middlewares/notFound";
 import cookieParser from "cookie-parser";
 import cronJobs from "./cronJobs";
 import { imageRepository } from "./di/serviceLocator";
+import cors from "cors";
 
 const app = express();
 
@@ -17,7 +18,7 @@ app.use(
     extended: true
   })
 );
-
+app.use(cors());
 app.use(express.json());
 
 app.use(cookieParser());
